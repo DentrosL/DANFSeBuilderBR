@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
-    container_name: trilha-poo-php
+    container_name: render-tests-php
     working_dir: /var/www
     volumes:
       - ./:/var/www
@@ -19,9 +19,9 @@ services:
 
   postgres:
     image: postgres:17
-    container_name: trilha-poo-pgsql
+    container_name: render-tests-pgsql
     environment:
-      POSTGRES_DB: trilha_poo
+      POSTGRES_DB: render_tests
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:

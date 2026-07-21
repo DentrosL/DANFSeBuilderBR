@@ -1,0 +1,281 @@
+/* GLOBAL */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #ececec;
+    font-family: Arial, sans-serif;
+    color: #000;
+    padding: 12px;
+}
+
+/* A4 */
+.page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    background: #fff;
+    border: 1pt solid #858585;
+}
+
+/* HEADER */
+.header {
+    display: grid;
+    grid-template-columns: 42mm 1fr 48mm;
+    min-height: 30mm;
+    border-bottom: .5pt solid #000;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: .5pt solid #000;
+}
+
+.logo img {
+    max-width: 36mm;
+    max-height: 18mm;
+}
+
+.header-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.titulo {
+    font-size: 9pt;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+}
+
+.subtitulo {
+    margin-top: 1mm;
+    font-size: 9pt;
+    font-weight: bold;
+}
+
+.homologacao {
+    margin-top: 1mm;
+    color: #c00;
+    font-size: 9pt;
+    font-weight: bold;
+}
+
+.header-right {
+    padding: 2mm;
+    border-left: .5pt solid #000;
+    font-family: "Microsoft Sans Serif", Arial, sans-serif;
+    font-size: 6pt;
+    line-height: 1.45;
+}
+
+/* SECTION */
+.section {
+    width: 100%;
+}
+
+.section-title {
+    background: #f1f1f1;
+    border-bottom: .5pt solid #000;
+    padding: 1.2mm 2mm;
+    font-size: 7pt;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* KEY */
+.chave {
+    padding: 2mm;
+    border-bottom: .5pt solid #000;
+    font-family: "Microsoft Sans Serif", Arial, sans-serif;
+    font-size: 7pt;
+    word-break: break-all;
+}
+
+/* ROWS */
+.row {
+    display: grid;
+    border-bottom: .5pt solid #000;
+}
+
+.row:last-child {
+    border-bottom: none;
+}
+
+.row-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+/* PRESTADOR */
+.prestador-r1 {
+    grid-template-columns: 25% 20% 35% 20%;
+}
+
+.prestador-r2 {
+    grid-template-columns: 50% 25% 25%;
+}
+
+.prestador-r3 {
+    grid-template-columns: 50% 50%;
+}
+
+.prestador-r4 {
+    grid-template-columns: 35% 65%;
+}
+
+/* TOMADOR */
+.tomador-r1{
+    grid-template-columns:25% 20% 35% 20%;
+}
+
+.tomador-r2{
+    grid-template-columns:50% 25% 25%;
+}
+
+.tomador-r3{
+    grid-template-columns:50% 50%;
+}
+
+/* DESTINATÁRIO */
+.destinatario-r1{
+    grid-template-columns:30% 35% 35%;
+}
+
+.destinatario-r2{
+    grid-template-columns:50% 25% 25%;
+}
+
+.destinatario-r3{
+    grid-template-columns:50% 50%;
+}
+
+/* INTERMEDIÁRIO */
+.intermediario-r1{
+    grid-template-columns:25% 20% 35% 20%;
+}
+
+.intermediario-r2{
+    grid-template-columns:50% 25% 25%;
+}
+
+.intermediario-r3{
+    grid-template-columns:50% 50%;
+}
+
+/* SERVIÇO PRESTADO */
+.servico-r1{
+    grid-template-columns:40% 20% 40%;
+}
+
+.campo-descricao{
+    min-height:55mm;
+}
+
+.descricao-servico{
+    white-space:pre-wrap;
+    line-height:1.4;
+    align-items:flex-start;
+    overflow-wrap:anywhere;
+}
+
+/* ISSQN */
+.issqn-r1{
+    grid-template-columns:30% 40% 30%;
+}
+
+.issqn-r2{
+    grid-template-columns:18% 22% 12% 23% 25%;
+}
+
+.issqn-r3{
+    grid-template-columns:20% 20% 20% 20% 20%;
+}
+
+/* TRIBUTAÇÃO FEDERAL */
+.federal-r1{
+    grid-template-columns:20% 40% 40%;
+}
+
+.federal-r2{
+    grid-template-columns:50% 50%;
+}
+
+/* IBS / CBS */
+.ibs-r1{
+    grid-template-columns:25% 20% 40% 15%;
+}
+
+.ibs-r2{
+    grid-template-columns:30% 30% 20% 20%;
+}
+
+.ibs-r3{
+    grid-template-columns:25% 25% 25% 25%;
+}
+
+.ibs-r4{
+    grid-template-columns:35% 30% 35%;
+}
+
+/* TOTAIS */
+.totais-r1{
+    grid-template-columns:40% 30% 30%;
+}
+
+.totais-r2{
+    grid-template-columns:25% 25% 20% 30%;
+}
+
+/* INFOS COMPLEMENTARES */
+.campo-info{
+    min-height:45mm;
+}
+
+/* CEELS */
+.campo {
+    min-height: 14mm;
+    border-right: .5pt solid #000;
+    display: flex;
+    flex-direction: column;
+}
+
+.campo:last-child {
+    border-right: none;
+}
+
+.campo-label {
+    background: #f7f7f7;
+    padding: 1mm 2mm;
+    font-family: Arial, sans-serif;
+    font-size: 7pt;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.campo-valor {
+    flex: 1;
+    padding: 2mm;
+    font-family: "Microsoft Sans Serif", Arial, sans-serif;
+    font-size: 7pt;
+    display: flex;
+    align-items: flex-start;
+}
+
+/* PRINT */
+@media print {
+    body {
+        background: #fff;
+        padding: 0;
+    }
+
+    .page {
+        margin: 0;
+        border: 1pt solid #000;
+    }
+}
