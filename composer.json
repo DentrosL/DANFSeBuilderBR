@@ -1,0 +1,14 @@
+{
+    "name": "freeline-17/render-tests",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "dentros",
+            "email": "megami.ay@gmail.com"
+        }
+    ]
+}
