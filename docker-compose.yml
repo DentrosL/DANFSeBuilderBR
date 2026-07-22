@@ -14,20 +14,3 @@ services:
     command: php -S 0.0.0.0:8000 -t public
     stdin_open: true
     tty: true
-    depends_on:
-      - postgres
-
-  postgres:
-    image: postgres:17
-    container_name: render-tests-pgsql
-    environment:
-      POSTGRES_DB: render_tests
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-volumes:
-  postgres_data:

@@ -8,7 +8,7 @@ Este repositório serve como laboratório para experimentar:
 
 - geração de estrutura baseada em XML de NFS-e;
 - renderização de conteúdo em HTML/PDF;
-- execução local com PHP e PostgreSQL;
+- execução local com PHP;
 - uso de containers Docker para facilitar testes rápidos;
 - validação de ideias antes de levar a implementação para um projeto maior.
 
@@ -61,12 +61,6 @@ O arquivo .env pode conter valores como:
 ```env
 APP_ENV=local
 APP_DEBUG=true
-
-DB_HOST=postgres
-DB_PORT=3333
-DB_DATABASE=postgres
-DB_USERNAME=postgres
-DB_PASSWORD=postgres
 
 APP_PORT=8000
 ```
