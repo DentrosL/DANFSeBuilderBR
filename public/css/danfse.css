@@ -18,61 +18,73 @@ body {
     min-height: 297mm;
     margin: 0 auto;
     background: #fff;
-    border: 1pt solid #858585;
+    /* border: 1pt solid #858585; */
+}
+
+.topo{
+    display:grid;
+    grid-template-columns:1fr 36mm;
+    border-bottom:.5pt solid #000;
+}
+
+.topo-esquerda{
+    border-right:.5pt solid #000;
 }
 
 /* HEADER */
-.header {
-    display: grid;
-    grid-template-columns: 42mm 1fr 48mm;
-    min-height: 30mm;
-    border-bottom: .5pt solid #000;
+.header{
+    display:grid;
+    grid-template-columns:40mm 1fr 50mm;
+    min-height:16mm;
+    border-bottom:.5pt solid #000;
 }
 
-.logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-right: .5pt solid #000;
+.header-logo{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-right:.5pt solid #000;
+    padding:2mm;
 }
 
-.logo img {
-    max-width: 36mm;
-    max-height: 18mm;
+.header-logo img {
+    max-width: 28mm;
+    max-height: 14mm;
 }
 
-.header-center {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
+.header-documento{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
 }
 
-.titulo {
-    font-size: 9pt;
-    font-weight: bold;
-    font-family: Arial, sans-serif;
+.header-informacoes{
+    border-left:.5pt solid #000;
+    padding:2mm;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    font-size:7pt;
+    line-height:1.2;
 }
 
-.subtitulo {
-    margin-top: 1mm;
-    font-size: 9pt;
-    font-weight: bold;
+.titulo{
+    font-size:9pt;
+    font-weight:bold;
 }
 
-.homologacao {
-    margin-top: 1mm;
-    color: #c00;
-    font-size: 9pt;
-    font-weight: bold;
+.subtitulo{
+    font-size:8pt;
+    font-weight:bold;
 }
 
-.header-right {
-    padding: 2mm;
-    border-left: .5pt solid #000;
-    font-family: "Microsoft Sans Serif", Arial, sans-serif;
-    font-size: 9pt;
-    line-height: 1.45;
+.homologacao{
+    margin-top:1mm;
+    color:#c00;
+    font-size:8pt;
+    font-weight:bold;
 }
 
 /* SECTION */
@@ -80,71 +92,122 @@ body {
     width: 100%;
 }
 
+.section:first-child {
+    border-top: none;
+}
+
 .section-title {
-    background: #f1f1f1;
-    border-bottom: .5pt solid #000;
     padding: 1.2mm 2mm;
     font-size: 7pt;
     font-weight: bold;
     text-transform: uppercase;
 }
 
-/* KEY */
-.chave {
-    padding: 2mm;
-    border-bottom: .5pt solid #000;
-    font-family: "Microsoft Sans Serif", Arial, sans-serif;
-    font-size: 7pt;
-    word-break: break-all;
+.section-header{
+    display:flex;
+    align-items:center;
+    height:7mm;
+    padding:0 2mm;
+    border-top:.5pt solid #000;
+    background:#d1d1d17e;
+    font-size:7pt;
+    font-weight:bold;
+    text-transform:uppercase;
+}
+
+.chave-acesso{
+    min-height:8mm;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:1.5mm 2mm;
+    font-family:"Courier New", monospace;
+    font-size:8pt;
+    font-weight:bold;
+    letter-spacing:.5pt;
+}
+
+.identificacao-r1,
+.identificacao-r2,
+.identificacao-r3{
+    grid-template-columns:repeat(3,1fr);
+}
+
+.qrcode-box{
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:center;
+    padding:2mm;
+}
+
+.qrcode-imagem{
+    width:100%;
+    height: 80%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-top:2mm;
+    margin-bottom:2mm;
+}
+
+.qrcode-imagem img{
+    width:100%;
+    height:100%;
+}
+
+.qrcode-texto{
+    text-align:center;
+    font-size:6.1pt;
+    line-height:1.35;
+    font-family:"Microsoft Sans Serif", Arial, sans-serif;
 }
 
 /* ROWS */
 .row {
     display: grid;
-    border-bottom: .5pt solid #000;
 }
 
 .row:last-child {
     border-bottom: none;
 }
 
-.row-3 {
-    grid-template-columns: repeat(3, 1fr);
+/* PRESTADOR/TOMADOR/INTERMEDIÁRIO */
+.entidade-r1{
+    grid-template-columns:22% 33% 15% 15%;
 }
 
-/* PRESTADOR */
-.prestador-r1 {
-    grid-template-columns: 25% 20% 35% 20%;
-}
-
-.prestador-r2 {
-    grid-template-columns: 50% 25% 25%;
-}
-
-.prestador-r3 {
-    grid-template-columns: 50% 50%;
-}
-
-.prestador-r4 {
-    grid-template-columns: 35% 65%;
-}
-
-/* TOMADOR */
-.tomador-r1{
-    grid-template-columns:25% 20% 35% 20%;
-}
-
-.tomador-r2{
+.entidade-r2{
     grid-template-columns:50% 25% 25%;
 }
 
-.tomador-r3{
-    grid-template-columns:50% 50%;
+.entidade-r3{
+    grid-template-columns:60% 40%;
+}
+
+.entidade-r4{
+    grid-template-columns:40% 60%;
+}
+
+.entidade-r1 .campo{
+    min-height:12mm;
+}
+
+.entidade-r2 .campo{
+    min-height:12mm;
+}
+
+.entidade-r3 .campo{
+    min-height:12mm;
+}
+
+.entidade-r4 .campo{
+    min-height:10mm;
 }
 
 /* DESTINATÁRIO */
 .destinatario-r1{
-    grid-template-columns:30% 35% 35%;
+    grid-template-columns:50% 50%;
 }
 
 .destinatario-r2{
@@ -152,35 +215,22 @@ body {
 }
 
 .destinatario-r3{
-    grid-template-columns:50% 50%;
+    grid-template-columns:60% 40%;
 }
 
-/* INTERMEDIÁRIO */
-.intermediario-r1{
-    grid-template-columns:25% 20% 35% 20%;
-}
-
-.intermediario-r2{
-    grid-template-columns:50% 25% 25%;
-}
-
-.intermediario-r3{
-    grid-template-columns:50% 50%;
-}
-
-/* SERVIÇO PRESTADO */
+/* SERVIÇO */
 .servico-r1{
     grid-template-columns:40% 20% 40%;
 }
 
 .campo-descricao{
-    min-height:55mm;
+    min-height:42mm;
 }
 
-.descricao-servico{
-    white-space:pre-wrap;
-    line-height:1.4;
+.campo-descricao .campo-valor{
     align-items:flex-start;
+    white-space:pre-wrap;
+    line-height:1.45;
     overflow-wrap:anywhere;
 }
 
@@ -190,11 +240,11 @@ body {
 }
 
 .issqn-r2{
-    grid-template-columns:18% 22% 12% 23% 25%;
+    grid-template-columns:18% 22% 15% 45%;
 }
 
 .issqn-r3{
-    grid-template-columns:20% 20% 20% 20% 20%;
+    grid-template-columns:repeat(5,1fr);
 }
 
 /* TRIBUTAÇÃO FEDERAL */
@@ -206,21 +256,21 @@ body {
     grid-template-columns:50% 50%;
 }
 
-/* IBS / CBS */
+/* IBS/CBS */
 .ibs-r1{
-    grid-template-columns:25% 20% 40% 15%;
+    grid-template-columns:22% 20% 43% 15%;
 }
 
 .ibs-r2{
-    grid-template-columns:30% 30% 20% 20%;
+    grid-template-columns:100%;
 }
 
 .ibs-r3{
-    grid-template-columns:25% 25% 25% 25%;
+    grid-template-columns:repeat(4,1fr);
 }
 
 .ibs-r4{
-    grid-template-columns:35% 30% 35%;
+    grid-template-columns:34% 33% 33%;
 }
 
 /* TOTAIS */
@@ -229,53 +279,71 @@ body {
 }
 
 .totais-r2{
-    grid-template-columns:25% 25% 20% 30%;
+    grid-template-columns:33.33% 33.33% 33.33%;
 }
 
-/* INFOS COMPLEMENTARES */
+/* INFORMAÇÕES COMPLEMENTARES */
 .campo-info{
-    min-height:45mm;
+    min-height:28mm;
 }
 
-/* CEELS */
-.campo {
-    min-height: 14mm;
-    border-right: .5pt solid #000;
-    display: flex;
-    flex-direction: column;
+/* CAMPOS */
+.campo{
+    min-height:13mm;
+    display:flex;
+    flex-direction:column;
 }
 
-.campo:last-child {
-    border-right: none;
+.campo:last-child{
+    border-right:none;
 }
 
-.campo-label {
-    background: #f7f7f7;
-    padding: 1mm 2mm;
-    font-family: Arial, sans-serif;
-    font-size: 7pt;
-    font-weight: bold;
-    text-transform: uppercase;
+.campo-label{
+    padding:1mm 2mm;
+    font-size:6.8pt;
+    font-weight:bold;
+    text-transform:uppercase;
 }
 
-.campo-valor {
-    flex: 1;
-    padding: 2mm;
-    font-family: "Microsoft Sans Serif", Arial, sans-serif;
-    font-size: 7pt;
-    display: flex;
-    align-items: flex-start;
+.campo-valor{
+    flex:1;
+    display:flex;
+    align-items:flex-start;
+    padding:2mm;
+    font-size:7pt;
+    line-height:1.35;
+    overflow-wrap:anywhere;
+}
+
+.descricao-servico{
+    white-space:pre-wrap;
+}
+
+/* RODAPÉ */
+.footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    min-height:8mm;
+    padding:2mm 3mm;
+    border-top:.5pt solid #000;
+    font-size:6.5pt;
+    color:#444;
+}
+
+.footer-right{
+    white-space:nowrap;
 }
 
 /* PRINT */
-@media print {
-    body {
-        background: #fff;
-        padding: 0;
+@media print{
+    body{
+        background:#fff;
+        padding:0;
     }
 
-    .page {
-        margin: 0;
-        border: 1pt solid #000;
+    .page{
+        margin:0;
+        /* border:1pt solid #000; */
     }
 }

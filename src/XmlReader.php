@@ -57,10 +57,12 @@ class XmlReader
             'chave'                         => $this->value("//*[local-name()='infNFSe']/*[local-name()='chNFSe']"),
             'competencia'                   => $this->value("//*[local-name()='infNFSe']/*[local-name()='dtCompet']"),
             'emissao_nfse'                  => $this->value("//*[local-name()='infNFSe']/*[local-name()='dhProc']"),
+            'serie_dps'                     => $this->value("//*[local-name()='infDPS']/*[local-name()='serie']"),
             'emissao_dps'                   => $this->value("//*[local-name()='infDPS']/*[local-name()='dhEmi']"),
             'municipio'                     => $this->value("//*[local-name()='xLocPrestacao']"),
             'ambiente'                      => $this->value("//*[local-name()='ambGer']"),
             'status'                        => $this->value("//*[local-name()='cStat']"),
+            'finalidade'                    => $this->value("//*[local-name()='finNFSe']")
         ];
     }
 
@@ -79,11 +81,6 @@ class XmlReader
             'endereco_municipio'            => $this->value("//*[local-name()='emit']//*[local-name()='xMun']"),
             'endereco_estado'               => $this->value("//*[local-name()='emit']//*[local-name()='UF']"),
             'endereco_cep'                  => $this->value("//*[local-name()='emit']//*[local-name()='CEP']"),
-            'endereco'                      => trim(
-                                                    ($this->value("//*[local-name()='emit']//*[local-name()='xLgr']") ?? '').', '.
-                                                    ($this->value("//*[local-name()='emit']//*[local-name()='nro']") ?? '').' '.
-                                                    ($this->value("//*[local-name()='emit']//*[local-name()='xCpl']"))
-                                                ),
             'simples_nacional'              => $this->value("//*[local-name()='regTrib']/*[local-name()='opSimpNac']"),
             'regime_apuracao'               => $this->value("//*[local-name()='regTrib']/*[local-name()='regApTribSN']"),
         ];
@@ -103,11 +100,6 @@ class XmlReader
             'endereco_municipio'            => $this->value("//*[local-name()='toma']//*[local-name()='cMun']"),
             'endereco_estado'               => $this->value("//*[local-name()='toma']//*[local-name()='UF']"),
             'endereco_cep'                  => $this->value("//*[local-name()='toma']//*[local-name()='CEP']"),
-            'endereco'                      => trim(
-                                                    ($this->value("//*[local-name()='toma']//*[local-name()='xLgr']") ?? '').', '.
-                                                    ($this->value("//*[local-name()='toma']//*[local-name()='nro']") ?? '').' '.
-                                                    ($this->value("//*[local-name()='toma']//*[local-name()='xCpl']"))
-                                                ),
         ];
     }
 
@@ -129,11 +121,6 @@ class XmlReader
             'endereco_municipio'            => $this->value("//*[local-name()='dest']//*[local-name()='xMun']"),
             'endereco_estado'               => $this->value("//*[local-name()='dest']//*[local-name()='UF']"),
             'endereco_cep'                  => $this->value("//*[local-name()='dest']//*[local-name()='CEP']"),
-            'endereco'                      => trim(
-                                                    ($this->value("//*[local-name()='dest']//*[local-name()='xLgr']") ?? '').', '.
-                                                    ($this->value("//*[local-name()='dest']//*[local-name()='nro']") ?? '').' '.
-                                                    ($this->value("//*[local-name()='dest']//*[local-name()='xCpl']"))
-                                                ),
         ];
     }
 
@@ -156,11 +143,6 @@ class XmlReader
             'endereco_municipio'            => $this->value("//*[local-name()='interm']//*[local-name()='xMun']"),
             'endereco_estado'               => $this->value("//*[local-name()='interm']//*[local-name()='UF']"),
             'endereco_cep'                  => $this->value("//*[local-name()='interm']//*[local-name()='CEP']"),
-            'endereco'                      => trim(
-                                                    ($this->value("//*[local-name()='interm']//*[local-name()='xLgr']") ?? '').', '.
-                                                    ($this->value("//*[local-name()='interm']//*[local-name()='nro']") ?? '').' '.
-                                                    ($this->value("//*[local-name()='interm']//*[local-name()='xCpl']"))
-                                                ),
         ];
     }
 

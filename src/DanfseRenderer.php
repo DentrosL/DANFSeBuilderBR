@@ -4,7 +4,7 @@ namespace App;
 
 class DanfseRenderer
 {
-     public function prepare(array $dados): array
+    public function prepare(array $dados): array
     {
         $dados['identificacao']['competencia']      = Formatter::data($dados['identificacao']['competencia'] ?? null);
         $dados['identificacao']['emissao_nfse']     = Formatter::dataHora($dados['identificacao']['emissao_nfse'] ?? null);
@@ -14,6 +14,14 @@ class DanfseRenderer
         $dados['prestador']['endereco']             = Formatter::endereco($dados['prestador']['endereco_logradouro'] ?? null, $dados['prestador']['endereco_numero'] ?? null,$dados['prestador']['endereco_complemento'] ?? null );
         $dados['prestador']['municipio_uf']         = Formatter::municipioUf($dados['prestador']['endereco_municipio'] ?? null, $dados['prestador']['endereco_estado'] ?? null);
         $dados['prestador']['ibge_cep']             = Formatter::ibgeCep($dados['prestador']['codigo_ibge'] ?? null, $dados['prestador']['endereco_cep'] ?? null);
+        $dados['identificacao']['numero_nfse']      = Formatter::vazio($dados['identificacao']['numero_nfse'] ?? null);
+        $dados['identificacao']['numero_dps']       = Formatter::vazio($dados['identificacao']['numero_dps'] ?? null);
+        $dados['identificacao']['status']           = Formatter::vazio($dados['identificacao']['status'] ?? null);
+        $dados['identificacao']['chave']            = Formatter::vazio($dados['identificacao']['chave'] ?? null);
+
+        $chave                                      = $dados['identificacao']['chave'] ?? null;
+        $dados['qrcode']                            = $chave ? QrCode::image($chave) : null;
+        $dados['url_consulta']                      = QrCode::url($dados['identificacao']['chave'] ?? '');
 
         if (!empty($dados['tomador'])) {
             $dados['tomador']['documento']          = Formatter::documento($dados['tomador']['documento'] ?? null);
@@ -40,27 +48,27 @@ class DanfseRenderer
             $dados['intermediario']['ibge_cep']     = Formatter::ibgeCep($dados['intermediario']['codigo_ibge'] ?? null, $dados['intermediario']['endereco_cep'] ?? null);
         }
 
-        foreach (['deducoes', 'desconto_incondicionado', 'base_calculo', 'valor_issqn'] as $campo) {
+        foreach(['deducoes', 'desconto_incondicionado', 'base_calculo', 'valor_issqn'] as $campo) {
             $dados['issqn'][$campo] = Formatter::moeda($dados['issqn'][$campo] ?? null);
         }
 
         $dados['issqn']['aliquota'] = Formatter::percentual($dados['issqn']['aliquota'] ?? null);
 
-        foreach ($dados['federal'] as $campo => $valor) {
+        foreach($dados['federal'] as $campo => $valor) {
             if ($campo !== 'descricao') {
                 $dados['federal'][$campo] = Formatter::moeda($valor);
             }
         }
 
-        foreach (['base', 'valor_ibs_uf', 'valor_ibs_municipio', 'valor_total_ibs', 'valor_cbs'] as $campo) {
+        foreach(['base', 'valor_ibs_uf', 'valor_ibs_municipio', 'valor_total_ibs', 'valor_cbs'] as $campo) {
             $dados['ibscbs'][$campo] = Formatter::moeda($dados['ibscbs'][$campo] ?? null);
         }
 
-        foreach (['aliquota_ibs_uf', 'aliquota_ibs_municipio', 'aliquota_cbs'] as $campo) {
+        foreach(['aliquota_ibs_uf', 'aliquota_ibs_municipio', 'aliquota_cbs'] as $campo) {
             $dados['ibscbs'][$campo] = Formatter::percentual($dados['ibscbs'][$campo] ?? null);
         }
 
-        foreach ($dados['totais'] as $campo => $valor) {
+        foreach($dados['totais'] as $campo => $valor) {
             $dados['totais'][$campo] = Formatter::moeda($valor);
         }
 
@@ -69,7 +77,7 @@ class DanfseRenderer
 
     public function render(array $dados): string
     {
-        return $this->buildHtml($dados);
+        return $this->buildHtml($this->prepare($dados));
     }
 
     private function buildHtml(array $dados): string
