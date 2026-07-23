@@ -32,14 +32,14 @@ class Formatter
     {
         if (empty($valor) || $valor === '-') { return '-'; }
 
-        return number_format((float)$valor, 2, ',', '.');
+        return 'R$ '.number_format((float)$valor, 2, ',', '.');
     }
 
     public static function percentual(?string $valor): string
     {
         if (empty($valor) || $valor === '-') { return '-'; }
 
-        return number_format((float)$valor, 2, ',', '.') . '%';
+        return number_format((float)$valor, 2, ',', '.').'%';
     }
 
     public static function documento(?string $valor): string

@@ -60,7 +60,8 @@ class XmlReader
             'serie_dps'                     => $this->value("//*[local-name()='infDPS']/*[local-name()='serie']"),
             'emissao_dps'                   => $this->value("//*[local-name()='infDPS']/*[local-name()='dhEmi']"),
             'municipio'                     => $this->value("//*[local-name()='xLocPrestacao']"),
-            'ambiente'                      => $this->value("//*[local-name()='ambGer']"),
+            'ambiente'                      => $this->value("//*[local-name()='tpAmb']"),
+            'ambiente_gerador'              => $this->value("//*[local-name()='ambGer']"),
             'status'                        => $this->value("//*[local-name()='cStat']"),
             'finalidade'                    => $this->value("//*[local-name()='finNFSe']")
         ];
@@ -194,6 +195,13 @@ class XmlReader
 
     private function extractIbsCbs(): array
     {
+
+    //ibge
+    //uf
+    //exclusoes e reduções da bc
+    //bc após exclusões e reduções
+    //Red. Alíquota IBS / Red. Alíquota CBS
+    // aliq efetiva cbs
         return [
             'cst'                           => $this->value("//*[local-name()='cClassTrib']"),
             'indicador_operacao'            => $this->value("//*[local-name()='indOp']"),

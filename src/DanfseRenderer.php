@@ -26,6 +26,12 @@ class DanfseRenderer
         $dados['cancelada']                         = ($dados['identificacao']['status'] ?? null) === 'Cancelada';
         $dados['substituida']                       = ($dados['identificacao']['status'] ?? null) === 'Substituída';
 
+        $dados['ibscbs']['ibge']                    = '';
+        $dados['ibscbs']['uf']                      = '';
+        $dados['ibscbs']['iimu']                    = $dados['ibscbs']['indicador_operacao'].' / '.$dados['ibscbs']['ibge'].' / '.$dados['ibscbs']['municipio'].' / '.$dados['ibscbs']['uf'];
+
+        $dados['ibscbs']['ibsufmun']                = $dados['ibscbs']['aliquota_ibs_uf'].'% / '.$dados['ibscbs']['aliquota_ibs_municipio'].'%';
+
         if (!empty($dados['tomador'])) {
             $dados['tomador']['documento']          = Formatter::documento($dados['tomador']['documento'] ?? null);
             $dados['tomador']['telefone']           = Formatter::telefone($dados['tomador']['telefone'] ?? null);
@@ -71,6 +77,7 @@ class DanfseRenderer
             $dados['ibscbs'][$campo] = Formatter::percentual($dados['ibscbs'][$campo] ?? null);
         }
 
+        $dados['totais']['total_final'] = "R$ ";
         foreach($dados['totais'] as $campo => $valor) {
             $dados['totais'][$campo] = Formatter::moeda($valor);
         }
