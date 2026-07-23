@@ -23,6 +23,9 @@ class DanfseRenderer
         $dados['qrcode']                            = $chave ? QrCode::image($chave) : null;
         $dados['url_consulta']                      = QrCode::url($dados['identificacao']['chave'] ?? '');
 
+        $dados['cancelada']                         = ($dados['identificacao']['status'] ?? null) === 'Cancelada';
+        $dados['substituida']                       = ($dados['identificacao']['status'] ?? null) === 'Substituída';
+
         if (!empty($dados['tomador'])) {
             $dados['tomador']['documento']          = Formatter::documento($dados['tomador']['documento'] ?? null);
             $dados['tomador']['telefone']           = Formatter::telefone($dados['tomador']['telefone'] ?? null);

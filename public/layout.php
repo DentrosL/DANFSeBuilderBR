@@ -20,13 +20,18 @@ function campo(string $titulo, ?string $valor = null, $class = ''): void
 </head>
 <body>
     <div class="page">
+        <?php if ($dados['cancelada'] ?? false): ?>
+            <div class="watermark">CANCELADA</div>
+        <?php elseif ($dados['substituida'] ?? false): ?>
+            <div class="watermark">SUBSTITUÍDA</div>
+        <?php endif; ?>
         <header class="header">
-            <div class="header-logo">UGABUGA</div>
+            <div class="header-logo"><img src="./img/nfse_logo.png" alt="Logo NFSe" srcset=""></div>
             <div class="header-documento">
                 <h1 class="titulo">DANFSe v2.0</h1>
                 <p class="subtitulo">Documento Auxiliar da NFS-e </p>
-                <?php if (!empty($dados['homologacao'])) : ?>
-                    <p class="homologacao">NFS-e SEM VALIDADE JURÍDICA</p>
+                <?php if (($dados['identificacao']['ambiente'] ?? '') === 'Homologação'): ?>
+                    <div class="homologacao"> NFS-e SEM VALIDADE JURÍDICA </div>
                 <?php endif; ?>
             </div>
             <div class="header-informacoes">
@@ -60,7 +65,7 @@ function campo(string $titulo, ?string $valor = null, $class = ''): void
             </div>
             <aside class="qrcode-box">
                 <div class="qrcode-imagem">
-                    <?php if (!empty($dados['qrcode'])): ?>
+                    <?php if (!empty($dados['identificacao']['chave'])): ?>
                         <img src="<?= $dados['qrcode'] ?>" alt="QR Code">
                     <?php endif; ?>
                 </div>
@@ -71,7 +76,7 @@ function campo(string $titulo, ?string $valor = null, $class = ''): void
         </div>
         <!-- PRESTADOR -->
          <section class="section prestador">
-            <header class="section-header"> <span>PRESTADOR/FORNECEDOR</span> </header>
+            <header class="section-header"> <span>PRESTADOR / FORNECEDOR</span> </header>
             <div class="row entidade-r1">
                 <?php campo('CNPJ/CPF/NIF', $dados['prestador']['documento'] ?? ''); ?>
                 <?php campo('Indicador Municipal (Inscrição)', $dados['prestador']['inscricao_municipal'] ?? ''); ?>
@@ -93,9 +98,7 @@ function campo(string $titulo, ?string $valor = null, $class = ''): void
         </section>
         <!-- TOMADOR -->
         <section class="section tomador">
-            <header class="section-header">
-                <span>TOMADOR/ADQUIRENTE</span>
-            </header>
+            <header class="section-header"> <span>TOMADOR / ADQUIRENTE</span> </header>
             <div class="row entidade-r1">
                 <?php campo('CNPJ/CPF/NIF', $dados['tomador']['documento'] ?? ''); ?>
                 <?php campo('Indicador Municipal (Inscrição)', $dados['tomador']['inscricao'] ?? ''); ?>
@@ -111,7 +114,8 @@ function campo(string $titulo, ?string $valor = null, $class = ''): void
                 <?php campo('E-mail', $dados['tomador']['email'] ?? ''); ?>
             </div>
         </section>
-       <!-- DESTINATÁRIO -->
+        <!-- DESTINATÁRIO -->
+        <?php if (!empty($dados['destinatario'])): ?>
         <section class="section destinatario">
             <header class="section-header"> <span>DESTINATÁRIO DA OPERAÇÃO</span> </header>
             <div class="row destinatario-r1">
@@ -128,7 +132,9 @@ function campo(string $titulo, ?string $valor = null, $class = ''): void
                 <?php campo('E-mail', $dados['destinatario']['email'] ?? ''); ?>
             </div>
         </section>
+        <?php endif ?>
         <!-- INTERMEDIÁRIO -->
+        <?php if (!empty($dados['intermediario'])): ?>
         <section class="section intermediario">
             <header class="section-header"> <span>INTERMEDIÁRIO DA OPERAÇÃO</span> </header>
             <div class="row entidade-r1">
@@ -146,6 +152,7 @@ function campo(string $titulo, ?string $valor = null, $class = ''): void
                 <?php campo('E-mail', $dados['intermediario']['email'] ?? ''); ?>
             </div>
         </section>
+        <?php endif ?>
         <!-- SERVIÇO PRESTADO -->
         <section class="section servico">
             <header class="section-header"> <span>SERVIÇO PRESTADO</span> </header>
@@ -188,7 +195,7 @@ function campo(string $titulo, ?string $valor = null, $class = ''): void
         </section>
         <!-- TRIBUTAÇÃO FEDERAL -->
         <section class="section federal">
-            <header class="section-header"> <span>TRIBUTAÇÃO FEDERAL (EXCETO CBS)</span> </header>
+            <header class="section-header"> <span>TRIBUTAÇÃO FEDERAL</span> </header>
             <div class="row federal-r1">
                 <?php campo('IRRF', $dados['federal']['irrf'] ?? ''); ?>
                 <?php campo('Contribuição Previdenciária Retida', $dados['federal']['previdencia'] ?? ''); ?>
@@ -203,6 +210,7 @@ function campo(string $titulo, ?string $valor = null, $class = ''): void
             </div>
         </section>
         <!-- IBS/CBS -->
+        <?php if (!empty($dados['ibscbs'])): ?>
         <section class="section ibscbs">
             <header class="section-header"> <span>TRIBUTAÇÃO IBS/CBS</span> </header>
             <div class="row ibs-r1">
@@ -226,6 +234,7 @@ function campo(string $titulo, ?string $valor = null, $class = ''): void
                 <?php campo('CBS Apurada', $dados['ibscbs']['valor_cbs'] ?? ''); ?>
             </div>
         </section>
+        <?php endif ?>
         <!-- TOTAIS -->
         <section class="section totais">
             <header class="section-header"> <span>VALORES TOTAIS DA NFS-e</span> </header>
