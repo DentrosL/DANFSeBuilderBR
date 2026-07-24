@@ -11,16 +11,16 @@ class DanfseRenderer
         $dados['identificacao']['emissao_dps']      = Formatter::dataHora($dados['identificacao']['emissao_dps'] ?? null);
         $dados['prestador']['documento']            = Formatter::documento($dados['prestador']['documento'] ?? null);
         $dados['prestador']['telefone']             = Formatter::telefone($dados['prestador']['telefone'] ?? null);
-        $dados['prestador']['endereco']             = Formatter::endereco($dados['prestador']['endereco_logradouro'] ?? null, $dados['prestador']['endereco_numero'] ?? null,$dados['prestador']['endereco_complemento'] ?? null );
+        $dados['prestador']['endereco']             = Formatter::endereco($dados['prestador']['endereco_logradouro'] ?? null, $dados['prestador']['endereco_numero'] ?? null, $dados['prestador']['endereco_complemento'] ?? null);
         $dados['prestador']['municipio_uf']         = Formatter::municipioUf($dados['prestador']['endereco_municipio'] ?? null, $dados['prestador']['endereco_estado'] ?? null);
         $dados['prestador']['ibge_cep']             = Formatter::ibgeCep($dados['prestador']['codigo_ibge'] ?? null, $dados['prestador']['endereco_cep'] ?? null);
+
         $dados['identificacao']['numero_nfse']      = Formatter::vazio($dados['identificacao']['numero_nfse'] ?? null);
         $dados['identificacao']['numero_dps']       = Formatter::vazio($dados['identificacao']['numero_dps'] ?? null);
         $dados['identificacao']['status']           = Formatter::vazio($dados['identificacao']['status'] ?? null);
-        $dados['identificacao']['chave']            = Formatter::vazio($dados['identificacao']['chave'] ?? null);
+        $dados['identificacao']['chave']            = Formatter::vazio($dados['identificacao']['chave'] ?? '');
 
-        $chave                                      = $dados['identificacao']['chave'] ?? null;
-        $dados['qrcode']                            = $chave ? QrCode::image($chave) : null;
+        $dados['qrcode']                            = $dados['identificacao']['chave'] ? QrCode::image($dados['identificacao']['chave']) : null;
         $dados['url_consulta']                      = QrCode::url($dados['identificacao']['chave'] ?? '');
 
         $dados['cancelada']                         = ($dados['identificacao']['status'] ?? null) === 'Cancelada';
@@ -32,16 +32,19 @@ class DanfseRenderer
 
         $dados['ibscbs']['ibsufmun']                = $dados['ibscbs']['aliquota_ibs_uf'].'% / '.$dados['ibscbs']['aliquota_ibs_municipio'].'%';
 
+        foreach (['codigo_tributacao', 'codigo_nbs', 'descricao_tributacao', 'descricao', 'local_prestacao', 'codigo_municipio'] as $campo) {
+            $dados['servico'][$campo] = Formatter::vazio($dados['servico'][$campo] ?? null);
+        }
+
         if (!empty($dados['tomador'])) {
             $dados['tomador']['documento']          = Formatter::documento($dados['tomador']['documento'] ?? null);
             $dados['tomador']['telefone']           = Formatter::telefone($dados['tomador']['telefone'] ?? null);
             $dados['tomador']['endereco']           = Formatter::endereco($dados['tomador']['endereco_logradouro'] ?? null, $dados['tomador']['endereco_numero'] ?? null, $dados['tomador']['endereco_complemento'] ?? null);
             $dados['tomador']['municipio_uf']       = Formatter::municipioUf($dados['tomador']['endereco_municipio'] ?? null, $dados['tomador']['endereco_estado'] ?? null);
-            $dados['tomador']['ibge_cep']           = Formatter::ibgeCep($dados['tomador']['codigo_ibge'] ?? null,$dados['tomador']['endereco_cep'] ?? null);
+            $dados['tomador']['ibge_cep']           = Formatter::ibgeCep($dados['tomador']['codigo_ibge'] ?? null, $dados['tomador']['endereco_cep'] ?? null);
         }
 
         if (!empty($dados['destinatario'])) {
-
             $dados['destinatario']['documento']     = Formatter::documento($dados['destinatario']['documento'] ?? null);
             $dados['destinatario']['telefone']      = Formatter::telefone($dados['destinatario']['telefone'] ?? null);
             $dados['destinatario']['endereco']      = Formatter::endereco($dados['destinatario']['endereco_logradouro'] ?? null, $dados['destinatario']['endereco_numero'] ?? null, $dados['destinatario']['endereco_complemento'] ?? null);
@@ -57,29 +60,51 @@ class DanfseRenderer
             $dados['intermediario']['ibge_cep']     = Formatter::ibgeCep($dados['intermediario']['codigo_ibge'] ?? null, $dados['intermediario']['endereco_cep'] ?? null);
         }
 
-        foreach(['deducoes', 'desconto_incondicionado', 'base_calculo', 'valor_issqn'] as $campo) {
+        foreach (['deducoes', 'desconto_incondicionado', 'base_calculo', 'valor_issqn'] as $campo) {
             $dados['issqn'][$campo] = Formatter::moeda($dados['issqn'][$campo] ?? null);
+        }
+
+        foreach (['tipo_tributacao', 'municipio_incidencia', 'codigo_municipio', 'regime_especial', 'imunidade', 'suspensao', 'processo', 'beneficio', 'retencao'] as $campo) {
+            $dados['issqn'][$campo] = Formatter::vazio($dados['issqn'][$campo] ?? null);
         }
 
         $dados['issqn']['aliquota'] = Formatter::percentual($dados['issqn']['aliquota'] ?? null);
 
-        foreach($dados['federal'] as $campo => $valor) {
+        foreach ($dados['federal'] as $campo => $valor) {
             if ($campo !== 'descricao') {
                 $dados['federal'][$campo] = Formatter::moeda($valor);
             }
         }
 
-        foreach(['base', 'valor_ibs_uf', 'valor_ibs_municipio', 'valor_total_ibs', 'valor_cbs'] as $campo) {
+        foreach (['base', 'valor_ibs_uf', 'valor_ibs_municipio', 'valor_total_ibs', 'valor_cbs'] as $campo) {
             $dados['ibscbs'][$campo] = Formatter::moeda($dados['ibscbs'][$campo] ?? null);
         }
 
-        foreach(['aliquota_ibs_uf', 'aliquota_ibs_municipio', 'aliquota_cbs'] as $campo) {
+        foreach (['aliquota_ibs_uf', 'aliquota_ibs_municipio', 'aliquota_cbs', 'aliquota_efetiva_ibs_uf', 'aliquota_efetiva_ibs_municipio', 'aliquota_efetiva_cbs'] as $campo) {
             $dados['ibscbs'][$campo] = Formatter::percentual($dados['ibscbs'][$campo] ?? null);
         }
 
-        $dados['totais']['total_final'] = "R$ ";
-        foreach($dados['totais'] as $campo => $valor) {
+        foreach (['cst', 'indicador_operacao', 'municipio'] as $campo) {
+            $dados['ibscbs'][$campo] = Formatter::vazio($dados['ibscbs'][$campo] ?? null);
+        }
+
+        $dados['totais']['total_final'] = 'R$ ';
+        foreach ($dados['totais'] as $campo => $valor) {
+            if ($campo === 'total_final') {
+                continue;
+            }
+
             $dados['totais'][$campo] = Formatter::moeda($valor);
+        }
+
+        $dados['totais']['valor_total_nota'] = Formatter::moeda($dados['totais']['valor_total_nota'] ?? null);
+
+        foreach (['informacoes_complementares', 'informacoes_municipio', 'obra', 'inscricao_imobiliaria', 'evento', 'nfse_substituida'] as $campo) {
+            $dados['informacoes'][$campo] = Formatter::vazio($dados['informacoes'][$campo] ?? null);
+        }
+
+        foreach (['tributos_aproximados_federal', 'tributos_aproximados_estadual', 'tributos_aproximados_municipal'] as $campo) {
+            $dados['informacoes'][$campo] = Formatter::moeda($dados['informacoes'][$campo] ?? null);
         }
 
         return $dados;

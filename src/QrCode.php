@@ -14,13 +14,20 @@ class QrCode
 
     public static function url(string $chave): string
     {
-        return self::CONSULTA_URL.'?tpc=1&chave='.urlencode($chave);
+        $chave = trim($chave);
+        $chave = substr(trim($chave), 3);
+
+        $url = self::CONSULTA_URL.'?tpc=1&chave='.$chave;
+
+        return $url;
     }
 
     public static function image(string $chave, int $size = 180): string
     {
+        $url = self::url($chave);
+
         $qr = new EndroidQrCode(
-            data: self::url($chave),
+            data: $url,
             encoding: new Encoding('UTF-8'),
             errorCorrectionLevel: ErrorCorrectionLevel::Medium,
             size: $size,

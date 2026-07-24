@@ -1,11 +1,17 @@
 <?php
-function campo(string $titulo, ?string $valor = null, $class = ''): void
+function campo(string $titulo, ?string $valor = null, $class = '', bool $html = false): void
 {
 ?>
 <div class="campo <?= htmlspecialchars($class) ?>">
     <div class="campo-label"> <?= htmlspecialchars($titulo) ?> </div>
     <?php if ($valor !== null): ?>
-        <div class="campo-valor"> <?= htmlspecialchars($valor !== '' ? $valor : '-') ?> </div>
+        <div class="campo-valor">
+            <?php if ($html): ?>
+                <?= $valor !== '' ? $valor : '-' ?>
+            <?php else: ?>
+                <?= htmlspecialchars($valor !== '' ? $valor : '-') ?>
+            <?php endif; ?>
+        </div>
     <?php endif; ?>
 </div>
 <?php
@@ -31,23 +37,23 @@ function campo(string $titulo, ?string $valor = null, $class = ''): void
                 <div class="header-documento">
                     <h1 class="titulo">DANFSe v2.0</h1>
                     <p class="subtitulo">Documento Auxiliar da NFS-e </p>
-                    <?php if (($dados['identificacao']['ambiente'] ?? '') === 'Homologação'): ?>
+                    <?php if (($dados['identificacao']['ambiente'] ?? '') === '2' || ($dados['identificacao']['ambiente'] ?? '') === 'Homologação'): ?>
                         <div class="homologacao"> NFS-e SEM VALIDADE JURÍDICA </div>
                     <?php endif; ?>
                 </div>
                 <div class="header-informacoes">
-                    <div>Município: <?= htmlspecialchars($dados['identificacao']['municipio'] ?? '-') ?></div>
-                    <div>Ambiente Gerador: <?= htmlspecialchars($dados['identificacao']['ambiente_gerador'] ?? '-') ?></div>
-                    <div>Tipo Ambiente: <?= htmlspecialchars($dados['identificacao']['tipo_ambiente'] ?? '-') ?></div>
+                    <div class="mun">Município: <?= htmlspecialchars($dados['identificacao']['municipio'] ?? '-') ?></div>
+                    <div class="amb">Ambiente Gerador: <?= htmlspecialchars($dados['identificacao']['ambiente_gerador'] ?? '-') ?></div>
+                    <div class="tpamb">Tipo Ambiente: <?= htmlspecialchars($dados['identificacao']['ambiente'] ?? '-') ?></div>
                 </div>
             </header>
             <hr>
-            <div class="topo"> 
+            <div class="topo">
                 <div class="topo-esquerda">
                     <!-- IDENTIFICAÇÃO -->
                     <section class="section identificacao">
                         <div class="campo-extra"> CHAVE DE ACESSO DA NFS-e </div>
-                        <span class="chave-acesso" ><?= htmlspecialchars($dados['identificacao']['chave'] ?? '-') ?></span>
+                        <span class="chave-acesso"><?= htmlspecialchars($dados['identificacao']['chave'] ?? '-') ?></span>
                         <div class="row d3">
                             <?php campo('NÚMERO DA NFS-e', $dados['identificacao']['numero_nfse'] ?? ''); ?>
                             <?php campo('COMPETÊNCIA DA NFS-e', $dados['identificacao']['competencia'] ?? ''); ?>
@@ -68,6 +74,7 @@ function campo(string $titulo, ?string $valor = null, $class = ''): void
                         </div>
                     </section>
                 </div>
+
                 <aside class="qrcode-box">
                     <div class="qrcode-imagem">
                         <?php if (!empty($dados['identificacao']['chave'])): ?>
@@ -79,6 +86,7 @@ function campo(string $titulo, ?string $valor = null, $class = ''): void
                     </div>
                 </aside>
             </div>
+
             <hr>
             <!-- PRESTADOR -->
             <section class="section prestador">
@@ -94,14 +102,15 @@ function campo(string $titulo, ?string $valor = null, $class = ''): void
                     <?php campo('Código IBGE / CEP', $dados['prestador']['ibge_cep'] ?? ''); ?>
                 </div>
                 <div class="row d55">
-                    <?php campo('Endereço', $dados['prestador']['endereco'] ?? ''); ?> <!-- * -->
-                    <?php campo('Email', $dados['prestador']['email'] ?? ''); ?> <!-- * -->
+                    <?php campo('Endereço', $dados['prestador']['endereco'] ?? ''); ?>
+                    <?php campo('Email', $dados['prestador']['email'] ?? ''); ?>
                 </div>
                 <div class="row d22">
                     <?php campo('Simples Nacional na Data de Competência', $dados['prestador']['simples_nacional'] ?? ''); ?>
                     <?php campo('Regime de Apuração Tributária pelo SN', $dados['prestador']['regime_apuracao'] ?? ''); ?>
                 </div>
             </section>
+
             <hr>
             <!-- TOMADOR -->
             <section class="section tomador">
@@ -117,8 +126,8 @@ function campo(string $titulo, ?string $valor = null, $class = ''): void
                     <?php campo('Código IBGE / CEP', $dados['tomador']['ibge_cep'] ?? ''); ?>
                 </div>
                 <div class="row d55">
-                    <?php campo('Endereço', $dados['tomador']['endereco'] ?? ''); ?> <!-- * -->
-                    <?php campo('Email', $dados['tomador']['email'] ?? ''); ?> <!-- * -->
+                    <?php campo('Endereço', $dados['tomador']['endereco'] ?? ''); ?>
+                    <?php campo('Email', $dados['tomador']['email'] ?? ''); ?>
                 </div>
             </section>
             <!-- DESTINATÁRIO -->
@@ -136,8 +145,15 @@ function campo(string $titulo, ?string $valor = null, $class = ''): void
                     <?php campo('Código IBGE / CEP', $dados['destinatario']['ibge_cep'] ?? ''); ?>
                 </div>
                 <div class="row d55">
-                    <?php campo('Endereço', $dados['destinatario']['endereco'] ?? ''); ?> <!-- * -->
-                    <?php campo('Email', $dados['destinatario']['email'] ?? ''); ?> <!-- * -->
+                    <?php campo('Endereço', $dados['destinatario']['endereco'] ?? ''); ?>
+                    <?php campo('Email', $dados['destinatario']['email'] ?? ''); ?>
+                </div>
+            </section>
+            <?php else: ?>
+            <hr>
+            <section class="section intermediario">
+                <div class="row">
+                    <div class="campo-valor">DESTINATÁRIO DA OPERAÇÃO NÃO IDENTIFICADO NA NFS-e</div>
                 </div>
             </section>
             <?php endif ?>
@@ -157,11 +173,19 @@ function campo(string $titulo, ?string $valor = null, $class = ''): void
                     <?php campo('Código IBGE / CEP', $dados['intermediario']['ibge_cep'] ?? ''); ?>
                 </div>
                 <div class="row d55">
-                    <?php campo('Endereço', $dados['intermediario']['endereco'] ?? ''); ?> <!-- * -->
-                    <?php campo('Email', $dados['intermediario']['email'] ?? ''); ?> <!-- * -->
+                    <?php campo('Endereço', $dados['intermediario']['endereco'] ?? ''); ?>
+                    <?php campo('Email', $dados['intermediario']['email'] ?? ''); ?>
+                </div>
+            </section>
+            <?php else: ?>
+            <hr>
+            <section class="section intermediario">
+                <div class="row">
+                    <div class="campo-valor">INTERMEDIÁRIO DA OPERAÇÃO NÃO IDENTIFICADO NA NFS-e</div>
                 </div>
             </section>
             <?php endif ?>
+
             <hr>
             <!-- SERVIÇO PRESTADO -->
             <section class="section servico">
@@ -171,40 +195,50 @@ function campo(string $titulo, ?string $valor = null, $class = ''): void
                     <?php campo('Código da NBS', $dados['servico']['codigo_nbs'] ?? ''); ?>
                     <?php campo('Local da Prestação / Sigla UF / País', $dados['servico']['local_prestacao'] ?? ''); ?>
                 </div>
-                <div class="row sub">
-                    <?php campo('Descrição do Código de Tributação Nacional / Municipal',  $dados['servico']['descricao_tributacao'] ?? ''); ?>
+                <div class="row">
+                    <?php campo('Descrição do Código de Tributação Nacional / Municipal', $dados['servico']['descricao_tributacao'] ?? ''); ?>
                 </div>
                 <div class="row desc-servico">
-                    <?php campo('Descrição do Serviço', nl2br(htmlspecialchars($dados['servico']['descricao'] ?? '-')),); ?>
+                    <?php campo('Descrição do Serviço', nl2br(htmlspecialchars($dados['servico']['descricao'] ?? '-')), '', true); ?>
                 </div>
             </section>
-            <hr>
             <!-- TRIBUTAÇÃO MUNICIPAL (ISSQN) -->
+            <?php if (!empty($dados['issqn'])): ?>
+            <hr>
             <section class="section issqn">
                 <div class="row d225">
                     <div class="campo section-title">TRIBUTAÇÃO MUNICIPAL (ISSQN)</div>
                     <?php campo('Tipo de Tributação do ISSQN', $dados['issqn']['tipo_tributacao'] ?? ''); ?>
                     <?php campo('Município / Sigla UF / País de Incidência do ISSQN', $dados['issqn']['municipio_incidencia'] ?? ''); ?>
+                    <?php campo('Código Município de Incidência', $dados['issqn']['codigo_municipio'] ?? ''); ?>
                 </div>
                 <div class="row d4">
-                    <?php campo('Regime Especial de Tributação do ISSQN', $dados['issqn']['regime_especial'] ?? ''); ?> <!-- * -->
-                    <?php campo('Tipo de Imunidade ISSQN', $dados['issqn']['imunidade'] ?? ''); ?> <!-- * -->
-                    <?php campo('Suspensão da Exigibilidade do ISSQN', $dados['issqn']['suspensao'] ?? ''); ?> <!-- * -->
-                    <?php campo('Número Processo Suspensão', $dados['issqn']['processo'] ?? ''); ?> <!-- * -->
+                    <?php campo('Regime Especial de Tributação do ISSQN', $dados['issqn']['regime_especial'] ?? ''); ?>
+                    <?php campo('Tipo de Imunidade ISSQN', $dados['issqn']['imunidade'] ?? ''); ?>
+                    <?php campo('Suspensão da Exigibilidade do ISSQN', $dados['issqn']['suspensao'] ?? ''); ?>
+                    <?php campo('Número Processo Suspensão', $dados['issqn']['processo'] ?? ''); ?>
                 </div>
                 <div class="row d4">
-                    <?php campo('Benefício Municipal', $dados['issqn']['beneficio'] ?? ''); ?> <!-- * -->
-                    <?php campo('Código do BM', $dados['issqn']['cod_bm'] ?? ''); ?> <!-- * -->
-                    <?php campo('Total Deduções/Reduções', $dados['issqn']['deducoes'] ?? ''); ?> <!-- * -->
-                    <?php campo('Desconto Incondicionado', $dados['issqn']['desconto_incondicionado'] ?? ''); ?> <!-- * -->
-                </div>
-                <div class="row d4">
+                    <?php campo('Benefício Municipal', $dados['issqn']['beneficio'] ?? ''); ?>
+                    <?php campo('Total Deduções/Reduções', $dados['issqn']['deducoes'] ?? ''); ?>
+                    <?php campo('Desconto Incondicionado', $dados['issqn']['desconto_incondicionado'] ?? ''); ?>
                     <?php campo('BC ISSQN', $dados['issqn']['base_calculo'] ?? ''); ?>
+                </div>
+                <div class="row d4">
                     <?php campo('Alíquota Aplicada', $dados['issqn']['aliquota'] ?? ''); ?>
                     <?php campo('Retenção do ISSQN', $dados['issqn']['retencao'] ?? ''); ?>
-                    <?php campo('ISSQN Apurado', $dados['issqn']['retencao'] ?? ''); ?>
+                    <?php campo('ISSQN Apurado', $dados['issqn']['valor_issqn'] ?? ''); ?>
+                    <?php campo('Código do BM', $dados['issqn']['beneficio'] ?? ''); ?>
                 </div>
             </section>
+            <?php else: ?>
+            <hr>
+            <section class="section issqn">
+                <div class="row">
+                    <div class="campo-valor">TRIBUTAÇÃO MUNICIPAL (ISSQN) - OPERAÇÃO NÃO SUJEITA AO ISSQN</div>
+                </div>
+            </section>
+            <?php endif ?>
             <hr>
             <!-- TRIBUTAÇÃO FEDERAL -->
             <section class="section federal">
@@ -215,9 +249,9 @@ function campo(string $titulo, ?string $valor = null, $class = ''): void
                     <?php campo('Contribuições Sociais - Retidas', $dados['federal']['contribuicoes'] ?? ''); ?>
                 </div>
                 <div class="row d225">
-                    <?php campo('PIS - Débito Apuração Própria', $dados['federal']['pis'] ?? ''); ?> <!-- * -->
-                    <?php campo('COFINS - Débito Apuração Própria', $dados['federal']['cofins'] ?? ''); ?> <!-- * -->
-                    <?php campo('Descrição das Contribuições Sociais - Retidas', $dados['federal']['descricao'] ?? ''); ?> <!-- * -->
+                    <?php campo('PIS - Débito Apuração Própria', $dados['federal']['pis'] ?? ''); ?>
+                    <?php campo('COFINS - Débito Apuração Própria', $dados['federal']['cofins'] ?? ''); ?>
+                    <?php campo('Descrição das Contribuições Sociais - Retidas', $dados['federal']['descricao'] ?? ''); ?>
                 </div>
             </section>
             <!-- IBS/CBS -->
@@ -230,25 +264,26 @@ function campo(string $titulo, ?string $valor = null, $class = ''): void
                     <?php campo('Indicador da Operação / Código IBGE incidência / Município incidência / Sigla UF', $dados['ibscbs']['iimu'] ?? ''); ?>
                 </div>
                 <div class="row d4">
-                    <?php campo('Exclusões e Reduções da Base de Cálculo', $dados['ibscbs']['base'] ?? ''); ?>
-                    <?php campo('Base de Cálculo Após Exclusões e Reduções', $dados['ibscbs']['base'] ?? ''); ?>
-                    <?php campo('Red. Alíquota IBS / Red. Alíquota CBS', $dados['ibscbs']['base'] ?? ''); ?>
+                    <?php campo('Base de Cálculo', $dados['ibscbs']['base'] ?? ''); ?>
+                    <?php campo('Alíquota Efetiva - IBS UF', $dados['ibscbs']['aliquota_efetiva_ibs_uf'] ?? ''); ?>
+                    <?php campo('Alíquota Efetiva - IBS Mun', $dados['ibscbs']['aliquota_efetiva_ibs_municipio'] ?? ''); ?>
                     <?php campo('Alíquota - IBS UF / IBS Mun', $dados['ibscbs']['ibsufmun'] ?? ''); ?>
                 </div>
                 <div class="row d4">
-                    <?php campo('Alíq. Efetiva Municipal - IBS', $dados['ibscbs']['aliquota_ibs_municipio'] ?? ''); ?>
+                    <?php campo('Alíquota IBS Mun', $dados['ibscbs']['aliquota_ibs_municipio'] ?? ''); ?>
                     <?php campo('Valor Apurado Municipal - IBS', $dados['ibscbs']['valor_ibs_municipio'] ?? ''); ?>
-                    <?php campo('Alíq. Efetiva Estadual - IBS', $dados['ibscbs']['aliquota_ibs_uf'] ?? ''); ?>
+                    <?php campo('Alíquota IBS UF', $dados['ibscbs']['aliquota_ibs_uf'] ?? ''); ?>
                     <?php campo('Valor Apurado Estadual - IBS', $dados['ibscbs']['valor_ibs_uf'] ?? ''); ?>
                 </div>
                 <div class="row d4">
                     <?php campo('Valor Total Apurado - IBS', $dados['ibscbs']['valor_total_ibs'] ?? ''); ?>
                     <?php campo('Alíquota - CBS', $dados['ibscbs']['aliquota_cbs'] ?? ''); ?>
-                    <?php campo('Alíquota Efetiva - CBS', $dados['ibscbs']['aliquota_cbs'] ?? ''); ?>
+                    <?php campo('Alíquota Efetiva - CBS', $dados['ibscbs']['aliquota_efetiva_cbs'] ?? ''); ?>
                     <?php campo('Valor Total Apurado - CBS', $dados['ibscbs']['valor_cbs'] ?? ''); ?>
                 </div>
             </section>
             <?php endif ?>
+
             <hr>
             <!-- TOTAIS -->
             <section class="section totais">
@@ -257,14 +292,15 @@ function campo(string $titulo, ?string $valor = null, $class = ''): void
                     <?php campo('VALOR DA OPERAÇÃO / SERVIÇO', $dados['totais']['valor_servico'] ?? ''); ?>
                     <?php campo('Desconto Incondicionado', $dados['totais']['desconto_incondicionado'] ?? ''); ?>
                     <?php campo('Desconto Condicionado', $dados['totais']['desconto_condicionado'] ?? ''); ?>
+                    <?php campo('Valor Total da NFS-e', $dados['totais']['valor_total_nota'] ?? ''); ?>
                 </div>
                 <div class="row d4">
                     <?php campo('Total de Retenções (ISSQN / Federais)', $dados['totais']['retencoes'] ?? ''); ?>
                     <?php campo('VALOR LÍQUIDO DA NFS-e', $dados['totais']['valor_liquido'] ?? ''); ?>
-                    <?php campo('Total do IBS/CBS', $dados['totais']['valor_liquido'] ?? ''); ?>
+                    <?php campo('Total do IBS/CBS', (($dados['totais']['total_ibs'] ?? '-') . ' / ' . ($dados['totais']['total_cbs'] ?? '-'))); ?>
                     <div class="destaque">
                         <div class="campo-label">VALOR LÍQUIDO DA NFS-e + IBS/CBS</div>
-                        <div class="campo-valor"><?= htmlspecialchars($dados['totais']['total_final'] ?? '-') ?></div>
+                        <div class="campo-valor"><?= htmlspecialchars($dados['totais']['valor_total_nota'] ?? ($dados['totais']['valor_liquido'] ?? '-')) ?></div>
                     </div>
                 </div>
             </section>
@@ -273,31 +309,42 @@ function campo(string $titulo, ?string $valor = null, $class = ''): void
             <section class="section informacoes">
                 <div class="campo campo-extra">INFORMAÇÕES COMPLEMENTARES</div>
                 <div class="campo-compl">
-                    Imóvel (Dados do bloco do Imóvel);<br>
-                    Obra (Dados do bloco de Obra);<br>
-                    Evento (Dados do bloco do Evento);<br>
-                    infoCompl (Dados do bloco do InfoCompl);<br>
-                    Informações específicas para dados adicionais do município quando emitido pelo município com base em leiaute próprio;<br>
-                    Totais Aproximados dos Tributos cfe. Lei nº 12.741/2012: Federais: R$ ou %; Estaduais: R$ ou %; Municipais: R$ ou %;
+                    <?php
+                    $infoAdicional = array_filter([
+                        $dados['informacoes']['informacoes_complementares'] ?? null,
+                        $dados['informacoes']['informacoes_municipio'] ?? null,
+                        $dados['informacoes']['obra'] ?? null,
+                        $dados['informacoes']['inscricao_imobiliaria'] ?? null,
+                        $dados['informacoes']['evento'] ?? null,
+                        $dados['informacoes']['nfse_substituida'] ?? null,
+                        !empty($dados['informacoes']['tributos_aproximados_federal']) ? 'Tributos aproximados Federais: ' . $dados['informacoes']['tributos_aproximados_federal'] : null,
+                        !empty($dados['informacoes']['tributos_aproximados_estadual']) ? 'Tributos aproximados Estaduais: ' . $dados['informacoes']['tributos_aproximados_estadual'] : null,
+                        !empty($dados['informacoes']['tributos_aproximados_municipal']) ? 'Tributos aproximados Municipais: ' . $dados['informacoes']['tributos_aproximados_municipal'] : null,
+                    ]);
+                    echo nl2br(htmlspecialchars(implode("\n", $infoAdicional)));
+                    ?>
                 </div>
             </section>
+
             <footer>
                 <div class="footer-data">
                     <div class="campo">
                         <div class="campo-label">DATA CIENTIFICAÇÃO:</div>
-                        <div class="campo-valor">07/10/2005</div>
+                        <div class="campo-valor"></div>
                     </div>
                 </div>
                 <div class="footer-assin">
                     <div class="campo">
                         <div class="campo-label">IDENTIFICAÇÃO E ASSINATURA:</div>
                         <div class="campo-valor"></div>
-                    </div>                    
+                    </div>
                 </div>
                 <div class="footer-chaves">
                     <div class="campo">
                         <div class="campo-label">Nº NFS-e / CHAVE NFS-e:</div>
-                        <div class="campo-valor">nnnnnnnnnnnnnnnnnnnnnnn / nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn</div>
+                        <div class="campo-valor">
+                            <?= htmlspecialchars($dados['identificacao']['numero_nfse'] ?? '-') ?> / <?= htmlspecialchars($dados['identificacao']['chave'] ?? '-') ?>
+                        </div>
                     </div>
                 </div>
             </footer>
