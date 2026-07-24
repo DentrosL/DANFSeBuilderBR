@@ -15,7 +15,6 @@ class QrCode
     public static function url(string $chave): string
     {
         $chave = trim($chave);
-        $chave = substr(trim($chave), 3);
 
         $url = self::CONSULTA_URL.'?tpc=1&chave='.$chave;
 
@@ -36,7 +35,6 @@ class QrCode
         );
 
         $writer = new PngWriter();
-
         $result = $writer->write($qr);
 
         return 'data:image/png;base64,'.base64_encode($result->getString());
