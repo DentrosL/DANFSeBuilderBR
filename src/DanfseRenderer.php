@@ -18,7 +18,12 @@ class DanfseRenderer
         $dados['identificacao']['numero_nfse']      = Formatter::vazio($dados['identificacao']['numero_nfse'] ?? null);
         $dados['identificacao']['numero_dps']       = Formatter::vazio($dados['identificacao']['numero_dps'] ?? null);
         $dados['identificacao']['status']           = Formatter::vazio($dados['identificacao']['status'] ?? null);
-        $dados['identificacao']['chave']            = Formatter::vazio($dados['identificacao']['chave'] ?? '');
+
+        $chave                                      = $dados['identificacao']['chave'] ?? '';
+        if (str_starts_with($chave, 'NFS')) {
+            $chave                                  = substr($chave, 3);
+        }
+        $dados['identificacao']['chave']            = Formatter::vazio($chave);
 
         $dados['qrcode']                            = $dados['identificacao']['chave'] ? QrCode::image($dados['identificacao']['chave']) : null;
         $dados['url_consulta']                      = QrCode::url($dados['identificacao']['chave'] ?? '');
